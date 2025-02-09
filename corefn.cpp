@@ -11,7 +11,7 @@ extern NBlock* programBlock;
 llvm::Function* createPrintfFunction(CodeGenContext& context)
 {
     std::vector<llvm::Type*> printf_arg_types;
-    printf_arg_types.push_back(llvm::Type::getInt8PtrTy(MyContext)); //char*
+    printf_arg_types.push_back(llvm::Type::getInt32Ty(MyContext)); //char*
 
     std::cout << "printf" << std::endl;
 
