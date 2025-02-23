@@ -11,7 +11,7 @@ void CodeGenContext::generateCode(NBlock& root)
 	
 	/* Create the top level interpreter function to call as entry */
 	vector<Type*> argTypes;
-	FunctionType *ftype = FunctionType::get(Type::getVoidTy(MyContext), makeArrayRef(argTypes), false);
+	FunctionType *ftype = FunctionType::get(Type::getVoidTy(MyContext), ArrayRef(argTypes), false);
 	mainFunction = Function::Create(ftype, GlobalValue::InternalLinkage, "main", module);
 	BasicBlock *bblock = BasicBlock::Create(MyContext, "entry", mainFunction, 0);
 	
@@ -93,7 +93,7 @@ Value* NMethodCall::codeGen(CodeGenContext& context)
 	for (it = arguments.begin(); it != arguments.end(); it++) {
 		args.push_back((**it).codeGen(context));
 	}
-	CallInst *call = CallInst::Create(function, makeArrayRef(args), "", context.currentBlock());
+	CallInst *call = CallInst::Create(function, ArrayRef(args), "", context.currentBlock());
 	std::cout << "Creating method call: " << id.name << endl;
 	return call;
 }
@@ -172,7 +172,7 @@ Value* NExternDeclaration::codeGen(CodeGenContext& context)
     for (it = arguments.begin(); it != arguments.end(); it++) {
         argTypes.push_back(typeOf((**it).type));
     }
-    FunctionType *ftype = FunctionType::get(typeOf(type), makeArrayRef(argTypes), false);
+    FunctionType *ftype = FunctionType::get(typeOf(type), ArrayRef(argTypes), false);
     Function *function = Function::Create(ftype, GlobalValue::ExternalLinkage, id.name.c_str(), context.module);
     return function;
 }
@@ -184,7 +184,7 @@ Value* NFunctionDeclaration::codeGen(CodeGenContext& context)
 	for (it = arguments.begin(); it != arguments.end(); it++) {
 		argTypes.push_back(typeOf((**it).type));
 	}
-	FunctionType *ftype = FunctionType::get(typeOf(type), makeArrayRef(argTypes), false);
+	FunctionType *ftype = FunctionType::get(typeOf(type), ArrayRef(argTypes), false);
 	Function *function = Function::Create(ftype, GlobalValue::InternalLinkage, id.name.c_str(), context.module);
 	BasicBlock *bblock = BasicBlock::Create(MyContext, "entry", function, 0);
 
